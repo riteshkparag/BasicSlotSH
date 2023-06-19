@@ -1,0 +1,2 @@
+# BasicSlotSH
+Inspired from SHU
