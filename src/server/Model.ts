@@ -1,8 +1,12 @@
 let reels: number[][] = [
     [4, 1, 3, 4, 0, 2, 3, 4, 3, 2, 4, 2, 4, 3, 0, 3, 1, 2, 4, 1],
     [4, 1, 3, 4, 0, 2, 3, 4, 3, 2, 4, 2, 4, 3, 0, 3, 1, 2, 4, 1],
+    [4, 1, 3, 4, 0, 2, 3, 4, 3, 2, 4, 2, 4, 3, 0, 3, 1, 2, 4, 1],
+    [4, 1, 3, 4, 0, 2, 3, 4, 3, 2, 4, 2, 4, 3, 0, 3, 1, 2, 4, 1],
     [4, 1, 3, 4, 0, 2, 3, 4, 3, 2, 4, 2, 4, 3, 0, 3, 1, 2, 4, 1]
 ];
+
+const numOfReels: number = 5;
 
 let balance: number = 99999;
 
@@ -12,7 +16,7 @@ let currentBet: number = 1;
 
 let symbolsBaseWin: number[] = [100, 50, 30, 20, 10];
 
-let defaultReelStops: number[] = [2, 5, 7]; // Non winnng stops for init screen
+let defaultReelStops: number[] = [2, 5, 7, 0, 7]; // Non winnng stops for init screen
 
 let reelStops: number[] = [];
 
@@ -30,6 +34,7 @@ export const getSymbolsBaseWin = (): number[] => symbolsBaseWin;
 export const getDefaultReelStops = (): number[] => defaultReelStops;
 export const getReelStops = (): number[] => reelStops;
 export const getWinAmount = (): number => win;
+export const getNumOfReels = (): number => numOfReels;
 
 export const setBalance = (val: number): void => {
     balance = val;

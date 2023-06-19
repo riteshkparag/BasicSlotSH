@@ -2,7 +2,7 @@ let balance: number = 0;
 let bets: number[] = [];
 let currentBet: number = 0;
 let reels: number[][] = [];
-let reelStops: number[] = [2, 5, 1];
+let reelStops: number[] = [2, 5, 1, 0, 7];
 let win: number = 0;
 let startReelsStopping: boolean = false;
 

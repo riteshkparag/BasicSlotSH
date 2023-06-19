@@ -50,6 +50,7 @@ export default class Loader {
         this.loader.onComplete.add(() => {
             console.log("Progress = 100%");
             this.loadingText.text = "LOADING: 100%";
+            this.loadingText.visible = false;
         });
     }
     /**
@@ -58,11 +59,20 @@ export default class Loader {
     private addAssetsToLoader(): void {
         this.loader.add("background", "./images/slot_machine_background.png");
         this.loader.add("reel", "./images/slot_machine_reels.png");
-        this.loader.add("sym0", "./images/icon_1.png");
-        this.loader.add("sym1", "./images/icon_2.png");
-        this.loader.add("sym2", "./images/icon_3.png");
-        this.loader.add("sym3", "./images/icon_4.png");
-        this.loader.add("sym4", "./images/icon_5.png");
+        this.loader.add("sym0", "./images/hv1_symbol.png");
+        this.loader.add("sym1", "./images/hv2_symbol.png");
+        this.loader.add("sym2", "./images/hv3_symbol.png");
+        this.loader.add("sym3", "./images/hv4_symbol.png");
+        this.loader.add("sym4", "./images/lv1_symbol.png");
+        this.loader.add("sym5", "./images/lv2_symbol.png");
+        this.loader.add("sym6", "./images/lv3_symbol.png");
+        this.loader.add("sym7", "./images/lv4_symbol.png");
+        this.loader.add("spin_button", "./images/spin_button.png");
+        this.loader.add("symold0", "./images/icon_1.png");
+        this.loader.add("symold1", "./images/icon_2.png");
+        this.loader.add("symold2", "./images/icon_3.png");
+        this.loader.add("symold3", "./images/icon_4.png");
+        this.loader.add("symold4", "./images/icon_5.png");
         this.loader.add("spinLever1", "./images/hand_lever_frame_1.png");
         this.loader.add("spinLever2", "./images/hand_lever_frame_2.png");
         this.loader.add("spinLever3", "./images/hand_lever_frame_3.png");

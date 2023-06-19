@@ -1,7 +1,7 @@
 import express from "express";
 import * as path from "path";
 import * as _ from "lodash";
-import { getBalance, getBets, getCurrentBet, getDefaultReelStops, getReels, getSymbolsBaseWin, getWinAmount, setBalance, setCurrentBet, setWinAmount } from "./Model";
+import { getBalance, getBets, getCurrentBet, getDefaultReelStops, getNumOfReels, getReels, getSymbolsBaseWin, getWinAmount, setBalance, setCurrentBet, setWinAmount } from "./Model";
 
 const port = 3000;
 const app = express();
@@ -52,7 +52,7 @@ const spinResponse = () => {
         reelStops: reelStops,
         win: getWinAmount()
     };
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < getNumOfReels(); i++) {
         const num = Math.floor(Math.random() * getReels()[i].length);
         reelStops.push(num);
     }

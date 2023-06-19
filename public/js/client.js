@@ -26607,16 +26607,16 @@ void main() {
   // src/client/Constants.ts
   var Constant = class {
   };
-  Constant.GAME_WIDTH = 800;
-  Constant.GAME_HEIGHT = 1280;
-  Constant.SYMBOLS_COUNT = 5;
-  Constant.SYMBOL_WIDTH = 108;
-  Constant.SYMBOL_HEIGHT = 108;
-  Constant.NUM_OF_REELS = 3;
+  Constant.GAME_WIDTH = 1520;
+  Constant.GAME_HEIGHT = 1920;
+  Constant.SYMBOLS_COUNT = 8;
+  Constant.SYMBOL_WIDTH = 256;
+  Constant.SYMBOL_HEIGHT = 256;
+  Constant.NUM_OF_REELS = 5;
   Constant.NUM_OF_ROWS = 3;
   Constant.REELS_GAP = 30;
   Constant.REELS_OFFSET_X = 11;
-  Constant.REELS_PANEL_OFFSET_X = 163;
+  Constant.REELS_PANEL_OFFSET_X = 155;
   Constant.REELS_PANEL_OFFSET_Y = 486;
   Constant.WIN = "WIN";
   Constant.BALANCE = "BALANCE";
@@ -26681,16 +26681,26 @@ void main() {
       this.loader.onComplete.add(() => {
         console.log("Progress = 100%");
         this.loadingText.text = "LOADING: 100%";
+        this.loadingText.visible = false;
       });
     }
     addAssetsToLoader() {
       this.loader.add("background", "./images/slot_machine_background.png");
       this.loader.add("reel", "./images/slot_machine_reels.png");
-      this.loader.add("sym0", "./images/icon_1.png");
-      this.loader.add("sym1", "./images/icon_2.png");
-      this.loader.add("sym2", "./images/icon_3.png");
-      this.loader.add("sym3", "./images/icon_4.png");
-      this.loader.add("sym4", "./images/icon_5.png");
+      this.loader.add("sym0", "./images/hv1_symbol.png");
+      this.loader.add("sym1", "./images/hv2_symbol.png");
+      this.loader.add("sym2", "./images/hv3_symbol.png");
+      this.loader.add("sym3", "./images/hv4_symbol.png");
+      this.loader.add("sym4", "./images/lv1_symbol.png");
+      this.loader.add("sym5", "./images/lv2_symbol.png");
+      this.loader.add("sym6", "./images/lv3_symbol.png");
+      this.loader.add("sym7", "./images/lv4_symbol.png");
+      this.loader.add("spin_button", "./images/spin_button.png");
+      this.loader.add("symold0", "./images/icon_1.png");
+      this.loader.add("symold1", "./images/icon_2.png");
+      this.loader.add("symold2", "./images/icon_3.png");
+      this.loader.add("symold3", "./images/icon_4.png");
+      this.loader.add("symold4", "./images/icon_5.png");
       this.loader.add("spinLever1", "./images/hand_lever_frame_1.png");
       this.loader.add("spinLever2", "./images/hand_lever_frame_2.png");
       this.loader.add("spinLever3", "./images/hand_lever_frame_3.png");
@@ -26722,7 +26732,7 @@ void main() {
   var bets = [];
   var currentBet = 0;
   var reels = [];
-  var reelStops = [2, 5, 1];
+  var reelStops = [2, 5, 1, 0, 7];
   var win = 0;
   var startReelsStopping = false;
   var getBalance = () => balance;
@@ -26865,12 +26875,6 @@ void main() {
       this.reelsPanel.addChild(this.reelsContainer);
       this.reelsContainer.x = Constant.REELS_PANEL_OFFSET_X;
       this.reelsContainer.y = Constant.REELS_PANEL_OFFSET_Y;
-      const reelMask = new Graphics();
-      reelMask.beginFill(0, 0.5);
-      reelMask.drawRect(0, 54, 405, 213);
-      reelMask.endFill();
-      this.reelsContainer.addChild(reelMask);
-      this.reelsContainer.mask = reelMask;
       const reelBGTexture = this.game.loader.resources.reel.texture;
       this.reelBG = new Sprite(reelBGTexture);
       this.reelBG.y = 54;
@@ -27140,7 +27144,7 @@ void main() {
   var Game = class extends Resize {
     constructor() {
       super();
-      this.game = new Application({ width: Constant.GAME_WIDTH, height: Constant.GAME_HEIGHT });
+      this.game = new Application({ width: Constant.GAME_WIDTH, height: Constant.GAME_HEIGHT, backgroundColor: 2719929 });
       globalThis.__PIXI_APP__ = this.game;
       window.document.body.appendChild(this.game.view);
       this.loadAssets();

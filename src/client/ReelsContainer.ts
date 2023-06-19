@@ -30,12 +30,12 @@ export default class ReelsContainer extends Resize {
         this.reelsContainer.x = Constant.REELS_PANEL_OFFSET_X
         this.reelsContainer.y = Constant.REELS_PANEL_OFFSET_Y
 
-        const reelMask: PIXI.Graphics = new PIXI.Graphics();
-        reelMask.beginFill(0x000000, 0.5);
-        reelMask.drawRect(0, 54, 405, 213);
-        reelMask.endFill();
-        this.reelsContainer.addChild(reelMask);
-        this.reelsContainer.mask = reelMask;
+        // const reelMask: PIXI.Graphics = new PIXI.Graphics();
+        // reelMask.beginFill(0x000000, 0.5);
+        // reelMask.drawRect(0, 54, 405, 213);
+        // reelMask.endFill();
+        // this.reelsContainer.addChild(reelMask);
+        // this.reelsContainer.mask = reelMask;
 
         const reelBGTexture = this.game.loader.resources!.reel.texture;
         this.reelBG = new PIXI.Sprite(reelBGTexture);
