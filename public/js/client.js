@@ -26648,9 +26648,39 @@ void main() {
   var Loader2 = class {
     constructor(game, onAssetsLoaded) {
       this.loader = game.loader;
+      this.game = game;
+      this.startLoading(onAssetsLoaded);
+      this.initLoaderText();
+    }
+    startLoading(onAssetsLoaded) {
       this.addAssetsToLoader();
       this.loader.load(() => {
         onAssetsLoaded();
+      });
+    }
+    initLoaderText() {
+      const loadingTextStyle = new TextStyle({
+        fontFamily: "Arial",
+        fontSize: 38,
+        fill: "yellow",
+        align: "center",
+        "stroke": "#000000",
+        "strokeThickness": 5
+      });
+      this.loadingText = new Text("", loadingTextStyle);
+      this.loadingText.x = 47;
+      this.loadingText.y = 198;
+      this.game.stage.addChild(this.loadingText);
+      this.indicateLoadingProgress();
+    }
+    indicateLoadingProgress() {
+      this.loader.onProgress.add(() => {
+        console.log("Progress = " + Math.floor(this.loader.progress) + "%");
+        this.loadingText.text = "LOADING: " + String(Math.floor(this.loader.progress)) + "%";
+      });
+      this.loader.onComplete.add(() => {
+        console.log("Progress = 100%");
+        this.loadingText.text = "LOADING: 100%";
       });
     }
     addAssetsToLoader() {
@@ -26969,13 +26999,13 @@ void main() {
         fill: "yellow",
         align: "center"
       });
-      this.balanceValue = new Text(getBalance(), balanceValueStyle);
+      this.balanceValue = new Text(String(getBalance()), balanceValueStyle);
       this.balanceValue.x = 4;
       this.balanceValue.y = 50;
       this.btnContainer.addChild(this.balanceValue);
     }
     updateBalance() {
-      this.balanceValue.text = getBalance();
+      this.balanceValue.text = String(getBalance());
     }
     createSpinLever() {
       for (let i = 1; i <= 10; i++) {
@@ -27082,7 +27112,7 @@ void main() {
       this.popupContainer.addChild(this.winningSirenIdle);
     }
     async showWin() {
-      this.winValue.text = getWin();
+      this.winValue.text = String(getWin());
       this.winValue.x = (Constant.GAME_WIDTH - this.winText.width) / 2;
       await new Promise((resolve3, reject2) => {
         this.winningSiren.visible = true;
@@ -27111,6 +27141,7 @@ void main() {
     constructor() {
       super();
       this.game = new Application({ width: Constant.GAME_WIDTH, height: Constant.GAME_HEIGHT });
+      globalThis.__PIXI_APP__ = this.game;
       window.document.body.appendChild(this.game.view);
       this.loadAssets();
       this.resize();

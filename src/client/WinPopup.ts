@@ -69,7 +69,7 @@ export default class WinPopup extends Resize {
     }
 
     public async showWin(): Promise<void> {
-        this.winValue.text = getWin();
+        this.winValue.text = String(getWin());
         this.winValue.x = (Constant.GAME_WIDTH - this.winText.width) / 2;
         await new Promise((resolve, reject) => {
             this.winningSiren.visible = true;

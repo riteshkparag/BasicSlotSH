@@ -50,14 +50,14 @@ export default class ConsolePanel extends Resize {
             fill: 'yellow',
             align: 'center',
         });
-        this.balanceValue = new PIXI.Text(getBalance(), balanceValueStyle);
+        this.balanceValue = new PIXI.Text(String(getBalance()), balanceValueStyle);
         this.balanceValue.x = 4;
         this.balanceValue.y = 50;
         this.btnContainer.addChild(this.balanceValue);
     }
 
     public updateBalance(): void {
-        this.balanceValue.text = getBalance();
+        this.balanceValue.text = String(getBalance());
     }
 
     private createSpinLever(): void {

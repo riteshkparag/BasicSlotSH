@@ -20,6 +20,8 @@ export default class Game extends Resize {
     constructor() {
         super();
         this.game = new PIXI.Application({ width: Constant.GAME_WIDTH, height: Constant.GAME_HEIGHT });
+        // @ts-ignore
+        globalThis.__PIXI_APP__ = this.game; // For using PIXIJS dev tools
         window.document.body.appendChild(this.game.view);
         this.loadAssets();
         this.resize();

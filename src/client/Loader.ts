@@ -2,15 +2,59 @@ import * as PIXI from "pixi.js";
 
 export default class Loader {
     public loader: PIXI.Loader;
-
+    private game: PIXI.Application;
+    private loadingText: PIXI.Text;
     constructor (game: PIXI.Application, onAssetsLoaded: () => void) {
         this.loader = game.loader;
+        this.game = game;
+        this.startLoading(onAssetsLoaded);
+        this.initLoaderText();
+    }
+
+    /**
+     * To start loading
+     */
+    private startLoading(onAssetsLoaded: () => void): void {
         this.addAssetsToLoader();
         this.loader.load(() => {
             onAssetsLoaded();
         });
     }
-
+    /**
+     * Init loading progress text
+     */
+    private initLoaderText(): void {
+        const loadingTextStyle = new PIXI.TextStyle({
+            fontFamily: 'Arial',
+            fontSize: 38,
+            fill: 'yellow',
+            align: 'center',
+            "stroke": "#000000",
+            "strokeThickness": 5
+        });
+        this.loadingText = new PIXI.Text("", loadingTextStyle);
+        this.loadingText.x = 47;
+        this.loadingText.y = 198;
+        this.game.stage.addChild(this.loadingText);
+        
+        this.indicateLoadingProgress();
+    }
+    /**
+     * To start showing loading progress
+     */
+    private indicateLoadingProgress(): void {
+        this.loader.onProgress.add(() => {
+            console.log("Progress = " + Math.floor(this.loader.progress) + "%");
+            this.loadingText.text = "LOADING: " + String(Math.floor(this.loader.progress)) + "%";
+        });
+        this.loader.onComplete.add(() => {
+            console.log("Progress = 100%");
+            this.loadingText.text = "LOADING: 100%";
+        });
+    }
+    /**
+     * To add assets to load
+     */
     private addAssetsToLoader(): void {
         this.loader.add("background", "./images/slot_machine_background.png");
         this.loader.add("reel", "./images/slot_machine_reels.png");
