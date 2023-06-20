@@ -1,7 +1,7 @@
 import express from "express";
 import * as path from "path";
 import * as _ from "lodash";
-import { clearWinDetails, getBalance, getBets, getCurrentBet, getDefaultReelStops, getNumOfReels, getPaylines, getPayout, getReels, getSymPerReel, getWinAmount, getWinDetails, setBalance, setCurrentBet, setWinAmount, setWinDetails } from "./Model";
+import { clearWinDetails, getBalance, getBets, getCurrentBet, getDefaultReelStops, getNumOfReels, getPaylines, getPayout, getReels, getSymPerReel, getWinAmount, getWinDetails, setBalance, setCurrentBet, setWinAmount, setWinDetails, getCheatReelStop, setCheat, getCheat } from "./Model";
 
 const port = 3000;
 const app = express();
@@ -26,10 +26,21 @@ router.get('/init', (req, res) => {
 });
 
 router.post('/spin', (req, res) => {
+    clearWinDetails();
     req.body && req.body.currentBet && req.body.currentBet > 0 && setCurrentBet(req.body.currentBet);
     setBalance(getBalance() - getCurrentBet());
     setWinAmount(0);
     const result = spinResponse();
+    res.send(JSON.stringify(result));
+});
+
+router.post('/cheat', (req, res) => {
+    clearWinDetails();
+    req.body && req.body.currentBet && req.body.currentBet > 0 && setCurrentBet(req.body.currentBet) ;
+    req.body && req.body.currentBet && req.body.currentBet > 0 && setCheat(req.body.payline);
+    setBalance(getBalance() - getCurrentBet());
+    setWinAmount(0);
+    const result = cheatResponse();
     res.send(JSON.stringify(result));
 });
 
@@ -63,9 +74,24 @@ const spinResponse = () => {
     result.balance = getBalance();
     return result;
 };
+const cheatResponse = () => {
+    let reelStops: number[] = getCheatReelStop(getCheat());
+    let result = {
+        balance: getBalance(),
+        currentBet: getCurrentBet(),
+        reelStops: reelStops,
+        totalWin: getWinAmount(),
+        wins: getWinDetails()
+    };
+
+    result.reelStops = reelStops;
+    result.totalWin = checkWin(reelStops);
+    setBalance(getBalance() + result.totalWin);
+    result.balance = getBalance();
+    return result;
+};
 
 const checkWin = (reelStops: number[]) => {
-    clearWinDetails();
     const reelGrid: number[][] = getReelGrid(reelStops);
     console.log(reelStops);
     calculateWins(reelGrid, reelStops);

@@ -49,6 +49,7 @@ export default class Game extends Resize {
         this.initialiseSpinBtn();
         this.initialiseReels();
         this.initialiseWinPopup();
+        this.initCheatHotKeys();
     }
 
     private iniitaliseBackground(): void {
@@ -71,23 +72,50 @@ export default class Game extends Resize {
         this.winPopup = new WinPopup(this.game);
     }
 
-    private onSpinClicked(): void {
+    private initCheatHotKeys(): void {
+        window.addEventListener("keydown", (ev) => {
+            switch(ev.key) {
+                case "1":
+                case "2":
+                case "3":
+                case "4":
+                case "5":
+                case "6":
+                case "7": this.onSpinClicked(Number(ev.key) - 1);
+            }
+        });
+    }
+    private onSpinClicked(cheat?: number): void {
         this.winPopup.resetPayoutDetails();
         this.consolePanel.disableSpinBtn();
         this.consolePanel.playLeverAnim(() => {
             setBalance(getBalance() - getCurrentBet());
             this.consolePanel.updateBalance();
-            this.serverComms.sendSpinReq().then(() => {
-                this.reelsContainer.updateReels().then(() => {
-                    this.consolePanel.updateBalance();
-                    getWin() > 0 ? this.showWin() : setTimeout(() => {
-                        this.consolePanel.enableSpinBtn();
-                    }, 500);
+            if (_.isNumber(cheat)) {
+                this.cheatActivated(cheat);
+            } else {
+                this.serverComms.sendSpinReq().then(() => {
+                    this.reelsContainer.updateReels().then(() => {
+                        this.consolePanel.updateBalance();
+                        getWin() > 0 ? this.showWin() : setTimeout(() => {
+                            this.consolePanel.enableSpinBtn();
+                        }, 500);
+                    });
                 });
-            });
+            }
         });
     }
 
+    private cheatActivated(cheat: number): void {
+        this.serverComms.sendCheatReq(cheat).then(() => {
+            this.reelsContainer.updateReels().then(() => {
+                this.consolePanel.updateBalance();
+                getWin() > 0 ? this.showWin() : setTimeout(() => {
+                    this.consolePanel.enableSpinBtn();
+                }, 500);
+            });
+        });
+    }
     private showWin(): void {
         this.winPopup.showWin().then(() => {
             this.consolePanel.enableSpinBtn();

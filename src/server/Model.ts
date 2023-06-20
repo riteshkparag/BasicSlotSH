@@ -5,6 +5,15 @@ let reels: number[][] = [
     [1, 5, 2, 5, 7, 7, 2, 5, 7, 0, 4, 0, 5, 2, 5, 6, 1, 4, 2, 5],
     [6, 7, 1, 2, 3, 0, 2, 1, 1, 3, 3, 1, 5, 3, 0, 5, 0, 5, 3, 7]
 ];
+const paylineCheatReelStop: number[][] = [
+    [1, 1, 1, 0, 0],
+    [5, 5, 0, 1, 2],
+    [0, 0, 0, 0, 0],
+    [2, 2, 1, 6, 6],
+    [5, 7, 15, 6, 8],
+    [1, 1, 0, 6, 5],
+    [0, 1, 2, 0, 5]
+];
 
 const numOfReels: number = 5;
 
@@ -21,6 +30,8 @@ let defaultReelStops: number[] = [0, 0, 0, 0, 0]; // stops for init screen
 let reelStops: number[] = [];
 
 let win: number = 0;
+
+let cheat: number = 0;
 
 const paylines: number[][] = [
     [1, 1, 1, 1, 1],
@@ -68,6 +79,8 @@ export const getWinAmount = (): number => win;
 export const getNumOfReels = (): number => numOfReels;
 export const getSymPerReel = (): number => symPerReel;
 export const getWinDetails = (): winData[] => wins;
+export const getCheat = (): number => cheat;
+export const getCheatReelStop = (payline: number): number[] => paylineCheatReelStop[payline];
 
 export const setBalance = (val: number): void => {
     balance = val;
@@ -82,8 +95,13 @@ export const setWinAmount = (val: number): void => {
     win = val;
 }
 
+export const setCheat = (val: number): void => {
+    cheat = val;
+}
+
 export const clearWinDetails = (): void => {
     wins = [];
+    win = 0;
 }
 
 export const setWinDetails = (paylineID: number, symID: number, symCount: number, winAmount: number): void => {

@@ -16,19 +16,12 @@ export default class Loader extends Resize{
         this.initLoaderText();
         this.resize();
     }
-
-    /**
-     * To start loading
-     */
     private startLoading(onAssetsLoaded: () => void): void {
         this.addAssetsToLoader();
         this.loader.load(() => {
             onAssetsLoaded();
         });
     }
-    /**
-     * Init loading progress text
-     */
     private initLoaderText(): void {
         const loadingTextStyle = new PIXI.TextStyle({
             fontFamily: 'Arial',
@@ -43,9 +36,6 @@ export default class Loader extends Resize{
         
         this.indicateLoadingProgress();
     }
-    /**
-     * To start showing loading progress
-     */
     private indicateLoadingProgress(): void {
         this.loader.onProgress.add(() => {
             this.loadingText.text = "LOADING: " + String(Math.floor(this.loader.progress)) + "%";
@@ -58,9 +48,6 @@ export default class Loader extends Resize{
             this.loadingText.visible = false;
         });
     }
-    /**
-     * To add assets to load
-     */
     private addAssetsToLoader(): void {
         this.loader.add("background", "./images/slot_machine_background.png");
         this.loader.add("sym0", "./images/hv1_symbol.png");

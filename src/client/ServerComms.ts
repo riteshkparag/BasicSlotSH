@@ -26,6 +26,23 @@ export default class ServerComms {
         this.parseSpinResponse(data);
     }
 
+    public async sendCheatReq(payline: number): Promise<void> {
+        const port = 3000;
+        const result = await fetch(`http://localhost:${port}/cheat`, {
+            method: "POST",
+            body: JSON.stringify({
+                currentBet: getCurrentBet(),
+                payline
+            }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        });
+        const data = await result.json();
+        console.log(data);
+        this.parseSpinResponse(data);
+    }
+
     private parseInitResponse(data: InitData): void {
         setBalance(data.balance);
         setBets(data.bets);
