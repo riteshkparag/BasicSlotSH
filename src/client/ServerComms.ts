@@ -38,8 +38,8 @@ export default class ServerComms {
         setBalance(data.balance);
         setCurrentBet(data.currentBet);
         setReelStops(data.reelStops);
-        setWin(data.win);
-        setWinDetails(data.winDetails);
+        setWin(data.totalWin);
+        setWinDetails(data.wins);
     }
 }
 
@@ -61,6 +61,6 @@ interface SpinData {
     balance: number,
     currentBet: number,
     reelStops: number[];
-    win: number;
-    winDetails: winData[];
+    totalWin: number;
+    wins: winData[];
 }
