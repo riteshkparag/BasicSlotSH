@@ -21,7 +21,7 @@ export default class Background extends Resize {
         const bgTexture = this.game.loader.resources!.background.texture;
         this.background = new PIXI.Sprite(bgTexture);
         this.bgContainer.addChild(this.background);
-        this.background.position.set(-744, -622);
+        this.background.position.set(-744, -824);
     }
 
     protected resize(): void {

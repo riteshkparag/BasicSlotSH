@@ -6,7 +6,8 @@ import Resize from "./Resize";
 export default class ConsolePanel extends Resize {
     private game: PIXI.Application;
     private btnContainer: PIXI.Container;
-    private btn: PIXI.AnimatedSprite;
+    private lever: PIXI.AnimatedSprite;
+    private spinBtn: PIXI.Sprite;
     private btnTexture: PIXI.Texture[] = [];
     private arrowLight: PIXI.AnimatedSprite;
     private arrowTexture: PIXI.Texture[] = [];
@@ -36,8 +37,8 @@ export default class ConsolePanel extends Resize {
         const balanceTextStyle = new PIXI.TextStyle({
             fontFamily: 'Arial',
             fontSize: 42,
-            fill: 'yellow',
-            align: 'center',
+            fill: '#FF5733',
+            align: 'center'
         });
         this.balanceText = new PIXI.Text(Constant.BALANCE, balanceTextStyle);
         this.balanceText.x = 4;
@@ -47,8 +48,8 @@ export default class ConsolePanel extends Resize {
         const balanceValueStyle = new PIXI.TextStyle({
             fontFamily: 'Arial',
             fontSize: 42,
-            fill: 'yellow',
-            align: 'center',
+            fill: '#FF5733',
+            align: 'center'
         });
         this.balanceValue = new PIXI.Text(String(getBalance()), balanceValueStyle);
         this.balanceValue.x = 4;
@@ -64,14 +65,24 @@ export default class ConsolePanel extends Resize {
         for (let i: number = 1; i <= 10; i++) {
             this.btnTexture.push(this.game.loader.resources!["spinLever" + i].texture);
         }
-        this.btn = new PIXI.AnimatedSprite(this.btnTexture);
-        this.btn.x = 670;
-        this.btn.y = 340;
-        this.btn.loop = false;
-        this.btn.animationSpeed = 0.25;
-        this.btn.interactive = true;
-        this.btn.buttonMode = true;
-        this.btnContainer.addChild(this.btn);
+        this.lever = new PIXI.AnimatedSprite(this.btnTexture);
+
+        this.lever.x = 970;
+        this.lever.y = 1450;
+        this.lever.scale.set(0.6);
+        this.lever.loop = false;
+        this.lever.animationSpeed = 0.25;
+        this.btnContainer.addChild(this.lever);
+
+        const spinBtnTexture = this.game.loader.resources!.spin_button.texture;
+        this.spinBtn = new PIXI.Sprite(spinBtnTexture);
+        this.spinBtn.x = 635;
+        this.spinBtn.y = 1500;
+
+        
+        this.spinBtn.interactive = true;
+        this.spinBtn.buttonMode = true;
+        this.btnContainer.addChild(this.spinBtn);
     }
 
     private createArrowLight(): void {
@@ -79,8 +90,8 @@ export default class ConsolePanel extends Resize {
             this.arrowTexture.push(this.game.loader.resources!["lightArrow" + i].texture);
         }
         this.arrowLight = new PIXI.AnimatedSprite(this.arrowTexture);
-        this.arrowLight.x = 624;
-        this.arrowLight.y = 520;
+        this.arrowLight.x = 920;
+        this.arrowLight.y = 1530;
         this.arrowLight.loop = true;
         this.arrowLight.animationSpeed = 0.20;
         this.arrowLight.play();
@@ -88,23 +99,23 @@ export default class ConsolePanel extends Resize {
     }
 
     private bindBtnEvents(): void {
-        this.btn.addListener("click", this.onClick);
-        this.btn.addListener("touchend", this.onClick);
+        this.spinBtn.addListener("click", this.onClick);
+        this.spinBtn.addListener("touchend", this.onClick);
     }
 
     public enableSpinBtn(): void {
-        this.btn.gotoAndStop(0);
-        this.btn.interactive = true;
+        this.lever.gotoAndStop(0);
         this.arrowLight.play();
+        this.spinBtn.interactive = true;
     }
 
     public disableSpinBtn(): void {
-        this.btn.interactive = false;
+        this.spinBtn.interactive = false;
     }
 
     public playLeverAnim(callback: () => void): void {
-        this.btn.play();
-        this.btn.onComplete = () => {
+        this.lever.play();
+        this.lever.onComplete = () => {
             console.log("lever down");
             this.arrowLight.stop();
             callback();

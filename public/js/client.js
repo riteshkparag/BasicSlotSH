@@ -26617,7 +26617,7 @@ void main() {
   Constant.REELS_GAP = 30;
   Constant.REELS_OFFSET_X = 11;
   Constant.REELS_PANEL_OFFSET_X = 56;
-  Constant.REELS_PANEL_OFFSET_Y = 342;
+  Constant.REELS_PANEL_OFFSET_Y = 140;
   Constant.WIN = "TOTAL WIN: ";
   Constant.BALANCE = "BALANCE";
 
@@ -26635,7 +26635,7 @@ void main() {
       const bgTexture = this.game.loader.resources.background.texture;
       this.background = new Sprite(bgTexture);
       this.bgContainer.addChild(this.background);
-      this.background.position.set(-744, -622);
+      this.background.position.set(-744, -824);
     }
     resize() {
       const scale = Math.min(window.innerWidth / Constant.GAME_WIDTH, window.innerHeight / Constant.GAME_HEIGHT);
@@ -26990,7 +26990,7 @@ void main() {
       const balanceTextStyle = new TextStyle({
         fontFamily: "Arial",
         fontSize: 42,
-        fill: "yellow",
+        fill: "#FF5733",
         align: "center"
       });
       this.balanceText = new Text(Constant.BALANCE, balanceTextStyle);
@@ -27000,7 +27000,7 @@ void main() {
       const balanceValueStyle = new TextStyle({
         fontFamily: "Arial",
         fontSize: 42,
-        fill: "yellow",
+        fill: "#FF5733",
         align: "center"
       });
       this.balanceValue = new Text(String(getBalance()), balanceValueStyle);
@@ -27015,42 +27015,48 @@ void main() {
       for (let i = 1; i <= 10; i++) {
         this.btnTexture.push(this.game.loader.resources["spinLever" + i].texture);
       }
-      this.btn = new AnimatedSprite(this.btnTexture);
-      this.btn.x = 670;
-      this.btn.y = 340;
-      this.btn.loop = false;
-      this.btn.animationSpeed = 0.25;
-      this.btn.interactive = true;
-      this.btn.buttonMode = true;
-      this.btnContainer.addChild(this.btn);
+      this.lever = new AnimatedSprite(this.btnTexture);
+      this.lever.x = 970;
+      this.lever.y = 1450;
+      this.lever.scale.set(0.6);
+      this.lever.loop = false;
+      this.lever.animationSpeed = 0.25;
+      this.btnContainer.addChild(this.lever);
+      const spinBtnTexture = this.game.loader.resources.spin_button.texture;
+      this.spinBtn = new Sprite(spinBtnTexture);
+      this.spinBtn.x = 635;
+      this.spinBtn.y = 1500;
+      this.spinBtn.interactive = true;
+      this.spinBtn.buttonMode = true;
+      this.btnContainer.addChild(this.spinBtn);
     }
     createArrowLight() {
       for (let i = 1; i <= 5; i++) {
         this.arrowTexture.push(this.game.loader.resources["lightArrow" + i].texture);
       }
       this.arrowLight = new AnimatedSprite(this.arrowTexture);
-      this.arrowLight.x = 624;
-      this.arrowLight.y = 520;
+      this.arrowLight.x = 920;
+      this.arrowLight.y = 1530;
       this.arrowLight.loop = true;
       this.arrowLight.animationSpeed = 0.2;
       this.arrowLight.play();
       this.btnContainer.addChild(this.arrowLight);
     }
     bindBtnEvents() {
-      this.btn.addListener("click", this.onClick);
-      this.btn.addListener("touchend", this.onClick);
+      this.spinBtn.addListener("click", this.onClick);
+      this.spinBtn.addListener("touchend", this.onClick);
     }
     enableSpinBtn() {
-      this.btn.gotoAndStop(0);
-      this.btn.interactive = true;
+      this.lever.gotoAndStop(0);
       this.arrowLight.play();
+      this.spinBtn.interactive = true;
     }
     disableSpinBtn() {
-      this.btn.interactive = false;
+      this.spinBtn.interactive = false;
     }
     playLeverAnim(callback) {
-      this.btn.play();
-      this.btn.onComplete = () => {
+      this.lever.play();
+      this.lever.onComplete = () => {
         console.log("lever down");
         this.arrowLight.stop();
         callback();
@@ -27068,6 +27074,7 @@ void main() {
     constructor(game) {
       super();
       this.payoutDetails = [];
+      this.symbolName = ["hv1", "hv2", "hv3", "hv4", "lv1", "lv2", "lv3", "lv4"];
       this.game = game;
       this.init();
       this.resize();
@@ -27079,12 +27086,12 @@ void main() {
       const winValueStyle = new TextStyle({
         fontFamily: "Arial",
         fontSize: 64,
-        fill: "yellow",
+        fill: "#FF5733",
         align: "center"
       });
       this.winValue = new Text("", winValueStyle);
       this.winValue.x = (Constant.GAME_WIDTH - this.winValue.width) / 2;
-      this.winValue.y = 1150;
+      this.winValue.y = 942;
       this.popupContainer.addChild(this.winValue);
       const payoutTextStyle = new TextStyle({
         fontFamily: "Arial",
@@ -27094,7 +27101,7 @@ void main() {
       });
       this.payoutText = new Text("", payoutTextStyle);
       this.payoutText.x = (Constant.GAME_WIDTH - this.payoutText.width) / 2;
-      this.payoutText.y = 1150;
+      this.payoutText.y = 971;
       this.popupContainer.addChild(this.payoutText);
       this.createWinningSirenAnim();
     }
@@ -27105,7 +27112,7 @@ void main() {
       }
       this.winningSiren = new AnimatedSprite(sirenTexture);
       this.winningSiren.x = 650;
-      this.winningSiren.y = 208;
+      this.winningSiren.y = 6;
       this.winningSiren.loop = true;
       this.winningSiren.animationSpeed = 0.2;
       this.winningSiren.visible = false;
@@ -27113,7 +27120,7 @@ void main() {
       const sirenIdleTexture = this.game.loader.resources.winningSirenIdle.texture;
       this.winningSirenIdle = new Sprite(sirenIdleTexture);
       this.winningSirenIdle.x = 650;
-      this.winningSirenIdle.y = 208;
+      this.winningSirenIdle.y = 6;
       this.popupContainer.addChild(this.winningSirenIdle);
     }
     async showWin() {
@@ -27129,7 +27136,6 @@ void main() {
           if (loopCount === 4) {
             this.winningSiren.stop();
             this.winningSiren.visible = false;
-            this.winValue.text = "";
             this.showPayoutDetails(0);
             resolve3(true);
           }
@@ -27140,19 +27146,23 @@ void main() {
       this.payoutDetails = [];
       const wins2 = getWinDetails();
       wins2.forEach((element) => {
-        this.payoutDetails.push(`Payline ${element.paylineID}, symID: ${element.symID} x${element.symCount}, Win = ${element.winAmount}`);
+        this.payoutDetails.push(`- payline ${element.paylineID}, ${this.symbolName[element.symID]} x${element.symCount}, ${element.winAmount}`);
       });
     }
     showPayoutDetails(index) {
-      this.payoutText.text = "";
-      if (index > this.payoutDetails.length) {
+      if (index > this.payoutDetails.length - 1 || this.payoutDetails.length === 0) {
         return;
       }
-      this.payoutText.text = this.payoutDetails[index];
+      this.payoutText.text = this.payoutText.text + "\n" + this.payoutDetails[index];
       this.payoutText.x = (Constant.GAME_WIDTH - this.payoutText.width) / 2;
       setTimeout(() => {
         this.showPayoutDetails(++index);
-      }, 2e3);
+      }, 750);
+    }
+    resetPayoutDetails() {
+      this.winValue.text = "";
+      this.payoutText.text = "";
+      this.payoutDetails = [];
     }
     resize() {
       const scale = Math.min(window.innerWidth / Constant.GAME_WIDTH, window.innerHeight / Constant.GAME_HEIGHT);
@@ -27165,7 +27175,7 @@ void main() {
   var Game = class extends Resize {
     constructor() {
       super();
-      this.game = new Application({ width: Constant.GAME_WIDTH, height: Constant.GAME_HEIGHT, backgroundColor: 2719929 });
+      this.game = new Application({ width: Constant.GAME_WIDTH, height: Constant.GAME_HEIGHT, backgroundColor: 15794175 });
       globalThis.__PIXI_APP__ = this.game;
       window.document.body.appendChild(this.game.view);
       this.loadAssets();
@@ -27207,6 +27217,7 @@ void main() {
       this.winPopup = new WinPopup(this.game);
     }
     onSpinClicked() {
+      this.winPopup.resetPayoutDetails();
       this.consolePanel.disableSpinBtn();
       this.consolePanel.playLeverAnim(() => {
         setBalance(getBalance() - getCurrentBet());

@@ -9,7 +9,7 @@ export default class Constant {
     public static REELS_GAP: number = 30;
     public static REELS_OFFSET_X: number = 11;
     public static REELS_PANEL_OFFSET_X: number = 56;
-    public static REELS_PANEL_OFFSET_Y: number = 342;
+    public static REELS_PANEL_OFFSET_Y: number = 140;
     public static WIN: string = "TOTAL WIN: ";
     public static BALANCE: string = "BALANCE";
 }

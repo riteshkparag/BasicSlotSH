@@ -8,6 +8,6 @@ export default class Resize{
     }
 
     protected resize(): void {
-        // Add resize code at the children classes
+        // Added resize code in children classes
     }
 }
