@@ -26618,7 +26618,7 @@ void main() {
   Constant.REELS_OFFSET_X = 11;
   Constant.REELS_PANEL_OFFSET_X = 56;
   Constant.REELS_PANEL_OFFSET_Y = 342;
-  Constant.WIN = "WIN";
+  Constant.WIN = "TOTAL WIN: ";
   Constant.BALANCE = "BALANCE";
 
   // src/client/Background.ts
@@ -26734,6 +26734,7 @@ void main() {
   var getReelStops = () => reelStops;
   var getWin = () => win;
   var getStartReelsStopping = () => startReelsStopping;
+  var getWinDetails = () => wins;
   var setBalance = (val) => {
     balance = val;
   };
@@ -26960,8 +26961,8 @@ void main() {
       setBalance(data.balance);
       setCurrentBet(data.currentBet);
       setReelStops(data.reelStops);
-      setWin(data.win);
-      setWinDetails(data.winDetails);
+      setWin(data.totalWin);
+      setWinDetails(data.wins);
     }
   };
 
@@ -27066,6 +27067,7 @@ void main() {
   var WinPopup = class extends Resize {
     constructor(game) {
       super();
+      this.payoutDetails = [];
       this.game = game;
       this.init();
       this.resize();
@@ -27074,16 +27076,6 @@ void main() {
       this.popupContainer = new Container();
       this.popupContainer.pivot.set(Constant.GAME_WIDTH / 2, Constant.GAME_HEIGHT / 2);
       this.game.stage.addChild(this.popupContainer);
-      const winTextStyle = new TextStyle({
-        fontFamily: "Arial",
-        fontSize: 64,
-        fill: "yellow",
-        align: "center"
-      });
-      this.winText = new Text(Constant.WIN, winTextStyle);
-      this.winText.x = (Constant.GAME_WIDTH - this.winText.width) / 2;
-      this.winText.y = 1040;
-      this.popupContainer.addChild(this.winText);
       const winValueStyle = new TextStyle({
         fontFamily: "Arial",
         fontSize: 64,
@@ -27092,8 +27084,18 @@ void main() {
       });
       this.winValue = new Text("", winValueStyle);
       this.winValue.x = (Constant.GAME_WIDTH - this.winValue.width) / 2;
-      this.winValue.y = 1100;
+      this.winValue.y = 1150;
       this.popupContainer.addChild(this.winValue);
+      const payoutTextStyle = new TextStyle({
+        fontFamily: "Arial",
+        fontSize: 50,
+        fill: "black",
+        align: "center"
+      });
+      this.payoutText = new Text("", payoutTextStyle);
+      this.payoutText.x = (Constant.GAME_WIDTH - this.payoutText.width) / 2;
+      this.payoutText.y = 1150;
+      this.popupContainer.addChild(this.payoutText);
       this.createWinningSirenAnim();
     }
     createWinningSirenAnim() {
@@ -27102,21 +27104,22 @@ void main() {
         sirenTexture.push(this.game.loader.resources["winningSiren" + i].texture);
       }
       this.winningSiren = new AnimatedSprite(sirenTexture);
-      this.winningSiren.x = 264;
-      this.winningSiren.y = 0;
+      this.winningSiren.x = 650;
+      this.winningSiren.y = 208;
       this.winningSiren.loop = true;
       this.winningSiren.animationSpeed = 0.2;
       this.winningSiren.visible = false;
       this.popupContainer.addChild(this.winningSiren);
       const sirenIdleTexture = this.game.loader.resources.winningSirenIdle.texture;
       this.winningSirenIdle = new Sprite(sirenIdleTexture);
-      this.winningSirenIdle.x = 264;
-      this.winningSirenIdle.y = 0;
+      this.winningSirenIdle.x = 650;
+      this.winningSirenIdle.y = 208;
       this.popupContainer.addChild(this.winningSirenIdle);
     }
     async showWin() {
-      this.winValue.text = String(getWin());
-      this.winValue.x = (Constant.GAME_WIDTH - this.winText.width) / 2;
+      this.winValue.text = Constant.WIN + String(getWin());
+      this.winValue.x = (Constant.GAME_WIDTH - this.winValue.width) / 2;
+      this.setPayoutTexts();
       await new Promise((resolve3, reject2) => {
         this.winningSiren.visible = true;
         this.winningSiren.play();
@@ -27127,10 +27130,29 @@ void main() {
             this.winningSiren.stop();
             this.winningSiren.visible = false;
             this.winValue.text = "";
+            this.showPayoutDetails(0);
             resolve3(true);
           }
         };
       });
+    }
+    setPayoutTexts() {
+      this.payoutDetails = [];
+      const wins2 = getWinDetails();
+      wins2.forEach((element) => {
+        this.payoutDetails.push(`Payline ${element.paylineID}, symID: ${element.symID} x${element.symCount}, Win = ${element.winAmount}`);
+      });
+    }
+    showPayoutDetails(index) {
+      this.payoutText.text = "";
+      if (index > this.payoutDetails.length) {
+        return;
+      }
+      this.payoutText.text = this.payoutDetails[index];
+      this.payoutText.x = (Constant.GAME_WIDTH - this.payoutText.width) / 2;
+      setTimeout(() => {
+        this.showPayoutDetails(++index);
+      }, 2e3);
     }
     resize() {
       const scale = Math.min(window.innerWidth / Constant.GAME_WIDTH, window.innerHeight / Constant.GAME_HEIGHT);

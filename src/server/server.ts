@@ -93,22 +93,22 @@ const calculateWins = (reelGrid: number[][], reelStops: number[]) => {
     const paylines = getPaylines();
     let totalWin: number = 0;
     for (let i = 0; i < paylines.length; i++) {
-        let symcount: number = 0;
+        let symCount: number = 0;
         const payline = paylines[i];
         let j: number = 1;
     
         while (j < numOfReels && reelGrid[j][payline[j]] === reelGrid[j - 1][payline[j - 1]]) {
-            symcount = ++j;
+            symCount = ++j;
         }
     
-        if (symcount > 2) {
+        if (symCount > 2) {
             const symID: number = reelGrid[0][payline[0]];
             const paylineID: number = i;
-            const payout = getPayout()[symID][symcount - 3];
+            const payout = getPayout()[symID][symCount - 3];
             const win: number = getCurrentBet() * payout;
             totalWin += win;
-            setWinDetails(paylineID, symID, symcount, win);
-            console.log(`Payline ${paylineID}, symID: ${symID} x${symcount}, Win = ${win}`);
+            setWinDetails(paylineID, symID, symCount, win);
+            console.log(`Payline ${paylineID}, symID: ${symID} x${symCount}, Win = ${win}`);
         }
     }    
     setWinAmount(totalWin);

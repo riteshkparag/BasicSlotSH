@@ -5,7 +5,7 @@ let reels: number[][] = [];
 let reelStops: number[] = [0, 0, 0, 0, 0];
 let win: number = 0;
 let startReelsStopping: boolean = false;
-type winData = {
+export type winData = {
     paylineID: number,
     symID: number,
     symCount: number,
