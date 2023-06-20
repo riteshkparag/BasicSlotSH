@@ -32,8 +32,6 @@ Navigate to `http://localhost:3000`
 * Sending Init response with the balance, reel and default reel stops.
 * Sending Spin response with random reel stops from the reel and with win amount as per the symbols
 
-### Open point
-* Reel spin not implemented
 
 ## Tech Used
 * TypeScript

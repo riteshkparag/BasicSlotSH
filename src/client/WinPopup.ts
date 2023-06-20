@@ -74,6 +74,7 @@ export default class WinPopup extends Resize {
         this.winValue.text = Constant.WIN + String(getWin());
         this.winValue.x = (Constant.GAME_WIDTH - this.winValue.width) / 2;
         this.setPayoutTexts();
+        this.showPayoutDetails(0);
         await new Promise((resolve, reject) => {
             this.winningSiren.visible = true;
             this.winningSiren.play();
@@ -83,7 +84,6 @@ export default class WinPopup extends Resize {
                 if (loopCount === 4) {
                     this.winningSiren.stop();
                     this.winningSiren.visible = false;
-                    this.showPayoutDetails(0);
                     resolve(true);
                 }
             };
@@ -107,7 +107,7 @@ export default class WinPopup extends Resize {
         this.payoutText.x = (Constant.GAME_WIDTH - this.payoutText.width) / 2;
         setTimeout(() => {
             this.showPayoutDetails(++index);
-        }, 750);
+        }, 350);
     }
 
     public resetPayoutDetails(): void {

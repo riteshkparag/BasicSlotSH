@@ -26645,12 +26645,16 @@ void main() {
   };
 
   // src/client/Loader.ts
-  var Loader2 = class {
+  var Loader2 = class extends Resize {
     constructor(game, onAssetsLoaded) {
+      super();
       this.loader = game.loader;
       this.game = game;
       this.startLoading(onAssetsLoaded);
+      this.loadingContainer = new Container();
+      this.game.stage.addChild(this.loadingContainer);
       this.initLoaderText();
+      this.resize();
     }
     startLoading(onAssetsLoaded) {
       this.addAssetsToLoader();
@@ -26661,21 +26665,22 @@ void main() {
     initLoaderText() {
       const loadingTextStyle = new TextStyle({
         fontFamily: "Arial",
-        fontSize: 38,
+        fontSize: 56,
         fill: "yellow",
         align: "center",
         "stroke": "#000000",
         "strokeThickness": 5
       });
       this.loadingText = new Text("", loadingTextStyle);
-      this.loadingText.x = 47;
-      this.loadingText.y = 198;
-      this.game.stage.addChild(this.loadingText);
+      this.loadingContainer.addChild(this.loadingText);
       this.indicateLoadingProgress();
     }
     indicateLoadingProgress() {
       this.loader.onProgress.add(() => {
         this.loadingText.text = "LOADING: " + String(Math.floor(this.loader.progress)) + "%";
+        this.loadingText.x = -this.loadingText.width / 2;
+        this.loadingText.y = -this.loadingText.height / 2;
+        this.resize();
       });
       this.loader.onComplete.add(() => {
         this.loadingText.text = "LOADING: 100%";
@@ -26716,6 +26721,11 @@ void main() {
       this.loader.add("winningSiren5", "./images/winning_siren_light_frame_5.png");
       this.loader.add("winningSiren6", "./images/winning_siren_light_frame_6.png");
       this.loader.add("winningSiren7", "./images/winning_siren_light_frame_7.png");
+    }
+    resize() {
+      const scale = Math.min(window.innerWidth / 1520, window.innerHeight / 1920);
+      this.loadingContainer.scale.set(scale);
+      this.loadingContainer.position.set(this.game.screen.width / 2, this.game.screen.height / 2);
     }
   };
 
@@ -27127,6 +27137,7 @@ void main() {
       this.winValue.text = Constant.WIN + String(getWin());
       this.winValue.x = (Constant.GAME_WIDTH - this.winValue.width) / 2;
       this.setPayoutTexts();
+      this.showPayoutDetails(0);
       await new Promise((resolve3, reject2) => {
         this.winningSiren.visible = true;
         this.winningSiren.play();
@@ -27136,7 +27147,6 @@ void main() {
           if (loopCount === 4) {
             this.winningSiren.stop();
             this.winningSiren.visible = false;
-            this.showPayoutDetails(0);
             resolve3(true);
           }
         };
@@ -27157,7 +27167,7 @@ void main() {
       this.payoutText.x = (Constant.GAME_WIDTH - this.payoutText.width) / 2;
       setTimeout(() => {
         this.showPayoutDetails(++index);
-      }, 750);
+      }, 350);
     }
     resetPayoutDetails() {
       this.winValue.text = "";
