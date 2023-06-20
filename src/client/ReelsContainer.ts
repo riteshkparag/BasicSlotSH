@@ -7,7 +7,6 @@ import Resize from "./Resize";
 export default class ReelsContainer extends Resize {
     private reelsPanel: PIXI.Container;
     private reelsContainer: PIXI.Container;
-    private reelBG: PIXI.Sprite;
     private reels: Array<Reel> = [];
     private symTextures: Array<PIXI.Texture> = [];
     private game: PIXI.Application;
@@ -37,10 +36,6 @@ export default class ReelsContainer extends Resize {
         // this.reelsContainer.addChild(reelMask);
         // this.reelsContainer.mask = reelMask;
 
-        const reelBGTexture = this.game.loader.resources!.reel.texture;
-        this.reelBG = new PIXI.Sprite(reelBGTexture);
-        this.reelBG.y = 54;
-        this.reelsContainer.addChild(this.reelBG);
 
 
         for (let i: number = 0; i < Constant.NUM_OF_REELS; i++) {

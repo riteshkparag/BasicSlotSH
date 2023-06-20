@@ -35,7 +35,7 @@ export default class Reel {
 
     public showStaticReel(pos: number, reelID: number): void {
         this.reel = getReels()[reelID];
-        const reelStartPos: number = pos === 0 ? this.reel.length - 1 : pos - 1;
+        const reelStartPos: number = pos;
         for (let i: number = 0; i < Constant.NUM_OF_ROWS; i++) {
             const reelPos: number = (reelStartPos + i) > (this.reel.length - 1) ? ((reelStartPos + i) - this.reel.length) : reelStartPos + i;
             const symbol: PIXI.Sprite = new PIXI.Sprite(this.symTextures[this.reel[reelPos]]);

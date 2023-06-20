@@ -16,12 +16,12 @@ export default class Background extends Resize {
 
     private init(): void {
         this.bgContainer = new PIXI.Container();
-        this.bgContainer.pivot.set(Constant.GAME_WIDTH / 2, Constant.GAME_HEIGHT / 2);
         this.game.stage.addChild(this.bgContainer);
 
         const bgTexture = this.game.loader.resources!.background.texture;
         this.background = new PIXI.Sprite(bgTexture);
         this.bgContainer.addChild(this.background);
+        this.background.position.set(-744, -622);
     }
 
     protected resize(): void {

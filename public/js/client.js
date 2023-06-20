@@ -26616,8 +26616,8 @@ void main() {
   Constant.NUM_OF_ROWS = 3;
   Constant.REELS_GAP = 30;
   Constant.REELS_OFFSET_X = 11;
-  Constant.REELS_PANEL_OFFSET_X = 155;
-  Constant.REELS_PANEL_OFFSET_Y = 486;
+  Constant.REELS_PANEL_OFFSET_X = 56;
+  Constant.REELS_PANEL_OFFSET_Y = 342;
   Constant.WIN = "WIN";
   Constant.BALANCE = "BALANCE";
 
@@ -26631,11 +26631,11 @@ void main() {
     }
     init() {
       this.bgContainer = new Container();
-      this.bgContainer.pivot.set(Constant.GAME_WIDTH / 2, Constant.GAME_HEIGHT / 2);
       this.game.stage.addChild(this.bgContainer);
       const bgTexture = this.game.loader.resources.background.texture;
       this.background = new Sprite(bgTexture);
       this.bgContainer.addChild(this.background);
+      this.background.position.set(-744, -622);
     }
     resize() {
       const scale = Math.min(window.innerWidth / Constant.GAME_WIDTH, window.innerHeight / Constant.GAME_HEIGHT);
@@ -26686,7 +26686,6 @@ void main() {
     }
     addAssetsToLoader() {
       this.loader.add("background", "./images/slot_machine_background.png");
-      this.loader.add("reel", "./images/slot_machine_reels.png");
       this.loader.add("sym0", "./images/hv1_symbol.png");
       this.loader.add("sym1", "./images/hv2_symbol.png");
       this.loader.add("sym2", "./images/hv3_symbol.png");
@@ -26696,11 +26695,6 @@ void main() {
       this.loader.add("sym6", "./images/lv3_symbol.png");
       this.loader.add("sym7", "./images/lv4_symbol.png");
       this.loader.add("spin_button", "./images/spin_button.png");
-      this.loader.add("symold0", "./images/icon_1.png");
-      this.loader.add("symold1", "./images/icon_2.png");
-      this.loader.add("symold2", "./images/icon_3.png");
-      this.loader.add("symold3", "./images/icon_4.png");
-      this.loader.add("symold4", "./images/icon_5.png");
       this.loader.add("spinLever1", "./images/hand_lever_frame_1.png");
       this.loader.add("spinLever2", "./images/hand_lever_frame_2.png");
       this.loader.add("spinLever3", "./images/hand_lever_frame_3.png");
@@ -26732,7 +26726,7 @@ void main() {
   var bets = [];
   var currentBet = 0;
   var reels = [];
-  var reelStops = [2, 5, 1, 0, 7];
+  var reelStops = [0, 0, 0, 0, 0];
   var win = 0;
   var startReelsStopping = false;
   var getBalance = () => balance;
@@ -26788,7 +26782,7 @@ void main() {
     }
     showStaticReel(pos, reelID) {
       this.reel = getReels()[reelID];
-      const reelStartPos = pos === 0 ? this.reel.length - 1 : pos - 1;
+      const reelStartPos = pos;
       for (let i = 0; i < Constant.NUM_OF_ROWS; i++) {
         const reelPos = reelStartPos + i > this.reel.length - 1 ? reelStartPos + i - this.reel.length : reelStartPos + i;
         const symbol = new Sprite(this.symTextures[this.reel[reelPos]]);
@@ -26875,10 +26869,6 @@ void main() {
       this.reelsPanel.addChild(this.reelsContainer);
       this.reelsContainer.x = Constant.REELS_PANEL_OFFSET_X;
       this.reelsContainer.y = Constant.REELS_PANEL_OFFSET_Y;
-      const reelBGTexture = this.game.loader.resources.reel.texture;
-      this.reelBG = new Sprite(reelBGTexture);
-      this.reelBG.y = 54;
-      this.reelsContainer.addChild(this.reelBG);
       for (let i = 0; i < Constant.NUM_OF_REELS; i++) {
         const reel = new Reel(this.game);
         this.reels.push(reel);

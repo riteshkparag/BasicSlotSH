@@ -2,14 +2,14 @@ let balance: number = 0;
 let bets: number[] = [];
 let currentBet: number = 0;
 let reels: number[][] = [];
-let reelStops: number[] = [2, 5, 1, 0, 7];
+let reelStops: number[] = [0, 0, 0, 0, 0];
 let win: number = 0;
 let startReelsStopping: boolean = false;
 
 export const getBalance = (): number => balance;
 export const getBets = (): number[] => bets;
 export const getCurrentBet = (): number => currentBet;
-export const getReels = (): number[][] => reels;0
+export const getReels = (): number[][] => reels;
 export const getReelStops = (): number[] => reelStops;
 export const getWin = (): number => win;
 export const getStartReelsStopping = (): boolean => startReelsStopping;
