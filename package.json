@@ -1,7 +1,7 @@
 {
   "name": "basic-slot-machine",
   "version": "1.0.0",
-  "description": "basic-slot-machine",
+  "description": "basic-slot-machine by Ritesh Kumar Parag",
   "main": "server.js",
   "scripts": {
     "start": "node dist/server.js",
