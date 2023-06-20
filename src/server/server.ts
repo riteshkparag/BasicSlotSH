@@ -58,7 +58,7 @@ const spinResponse = () => {
         reelStops.push(num);
     }
     result.reelStops = reelStops;
-    result.totalWin = checkWin([2,2,2,15,0]);
+    result.totalWin = checkWin(reelStops);
     setBalance(getBalance() + result.totalWin);
     result.balance = getBalance();
     return result;
