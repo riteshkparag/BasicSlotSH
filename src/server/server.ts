@@ -133,8 +133,8 @@ const calculateWins = (reelGrid: number[][], reelStops: number[]) => {
             const payout = getPayout()[symID][symCount - 3];
             const win: number = getCurrentBet() * payout;
             totalWin += win;
-            setWinDetails(paylineID, symID, symCount, win);
-            console.log(`Payline ${paylineID}, symID: ${symID} x${symCount}, Win = ${win}`);
+            setWinDetails(paylineID+1, symID, symCount, win);
+            console.log(`Payline ${paylineID+1}, symID: ${symID} x${symCount}, Win = ${win}`);
         }
     }    
     setWinAmount(totalWin);

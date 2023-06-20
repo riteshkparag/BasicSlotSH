@@ -73,18 +73,23 @@ export default class Game extends Resize {
     }
 
     private initCheatHotKeys(): void {
-        window.addEventListener("keydown", (ev) => {
-            switch(ev.key) {
-                case "1":
-                case "2":
-                case "3":
-                case "4":
-                case "5":
-                case "6":
-                case "7": this.onSpinClicked(Number(ev.key) - 1);
-            }
-        });
+        window.addEventListener("keydown", this.startCheatPlay.bind(this), {once : true});
     }
+    
+    private startCheatPlay (ev: KeyboardEvent): void {
+        switch(ev.key) {
+            case "1":
+            case "2":
+            case "3":
+            case "4":
+            case "5":
+            case "6":
+            case "7":   this.onSpinClicked(Number(ev.key) - 1);
+                        break;
+            default: this.initCheatHotKeys();
+        }
+    }
+
     private onSpinClicked(cheat?: number): void {
         this.winPopup.resetPayoutDetails();
         this.consolePanel.disableSpinBtn();
@@ -119,6 +124,7 @@ export default class Game extends Resize {
     private showWin(): void {
         this.winPopup.showWin().then(() => {
             this.consolePanel.enableSpinBtn();
+            this.initCheatHotKeys();
         });
     }
 }
