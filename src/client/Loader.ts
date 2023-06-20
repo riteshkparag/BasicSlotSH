@@ -44,11 +44,9 @@ export default class Loader {
      */
     private indicateLoadingProgress(): void {
         this.loader.onProgress.add(() => {
-            console.log("Progress = " + Math.floor(this.loader.progress) + "%");
             this.loadingText.text = "LOADING: " + String(Math.floor(this.loader.progress)) + "%";
         });
         this.loader.onComplete.add(() => {
-            console.log("Progress = 100%");
             this.loadingText.text = "LOADING: 100%";
             this.loadingText.visible = false;
         });

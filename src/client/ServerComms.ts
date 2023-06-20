@@ -1,5 +1,5 @@
 import { resolve } from "path";
-import { getCurrentBet, setBalance, setBets, setCurrentBet, setReels, setReelStops, setWin } from "./Model";
+import { getCurrentBet, setBalance, setBets, setCurrentBet, setReels, setReelStops, setWin, setWinDetails } from "./Model";
 
 export default class ServerComms {
     public async sendInitReq(): Promise<void> {
@@ -39,6 +39,7 @@ export default class ServerComms {
         setCurrentBet(data.currentBet);
         setReelStops(data.reelStops);
         setWin(data.win);
+        setWinDetails(data.winDetails);
     }
 }
 
@@ -50,9 +51,16 @@ interface InitData {
     defaultReelStops: number[]
 }
 
+type winData = {
+    paylineID: number,
+    symID: number,
+    symCount: number,
+    winAmount: number
+}
 interface SpinData {
     balance: number,
     currentBet: number,
     reelStops: number[];
     win: number;
+    winDetails: winData[];
 }

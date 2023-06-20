@@ -5,6 +5,13 @@ let reels: number[][] = [];
 let reelStops: number[] = [0, 0, 0, 0, 0];
 let win: number = 0;
 let startReelsStopping: boolean = false;
+type winData = {
+    paylineID: number,
+    symID: number,
+    symCount: number,
+    winAmount: number
+}
+let wins: winData[] = [];
 
 export const getBalance = (): number => balance;
 export const getBets = (): number[] => bets;
@@ -13,6 +20,7 @@ export const getReels = (): number[][] => reels;
 export const getReelStops = (): number[] => reelStops;
 export const getWin = (): number => win;
 export const getStartReelsStopping = (): boolean => startReelsStopping;
+export const getWinDetails = (): winData[] => wins;
 
 export const setBalance = (val: number): void => {
     balance = val;
@@ -34,4 +42,7 @@ export const setWin = (value: number): void => {
 };
 export const setStartReelsStopping = (value: boolean): void => {
     startReelsStopping = value;
+};
+export const setWinDetails = (value: winData[]): void => {
+    wins = value;
 };

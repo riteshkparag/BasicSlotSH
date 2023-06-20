@@ -8,19 +8,49 @@ let reels: number[][] = [
 
 const numOfReels: number = 5;
 
+const symPerReel: number = 3;
+
 let balance: number = 99999;
 
 let bets: number[] = [1, 2, 3, 4, 5];
 
 let currentBet: number = 1;
 
-let symbolsBaseWin: number[] = [100, 50, 30, 20, 10];
-
 let defaultReelStops: number[] = [0, 0, 0, 0, 0]; // stops for init screen
 
 let reelStops: number[] = [];
 
 let win: number = 0;
+
+const paylines: number[][] = [
+    [1, 1, 1, 1, 1],
+    [0, 0, 0, 0, 0],
+    [2, 2, 2, 2, 2],
+    [0, 0, 1, 2, 2],
+    [2, 2, 1, 0, 0],
+    [0, 1, 2, 1, 0],
+    [2, 1, 0, 1, 2]
+]
+
+const payout: number[][] = [
+    [10, 20, 50],
+    [5, 10, 20],
+    [5, 10, 15],
+    [5, 10, 15],
+    [2, 5, 10],
+    [1, 2, 5],
+    [1, 2, 3],
+    [1, 2, 3]
+]
+
+type winData = {
+    paylineID: number,
+    symID: number,
+    symCount: number,
+    winAmount: number
+}
+
+let wins: winData[] = [];
 
 export const resetData = (): void => {
     reelStops = [];
@@ -30,11 +60,14 @@ export const getReels = (): number[][] => reels;
 export const getBalance = (): number => balance;
 export const getBets = (): number[] => bets;
 export const getCurrentBet = (): number => currentBet;
-export const getSymbolsBaseWin = (): number[] => symbolsBaseWin;
 export const getDefaultReelStops = (): number[] => defaultReelStops;
 export const getReelStops = (): number[] => reelStops;
+export const getPaylines = (): number[][] => paylines;
+export const getPayout = (): number[][] => payout;
 export const getWinAmount = (): number => win;
 export const getNumOfReels = (): number => numOfReels;
+export const getSymPerReel = (): number => symPerReel;
+export const getWinDetails = (): winData[] => wins;
 
 export const setBalance = (val: number): void => {
     balance = val;
@@ -47,4 +80,18 @@ export const setReelStops = (val: number[]): void => {
 }
 export const setWinAmount = (val: number): void => {
     win = val;
+}
+
+export const clearWinDetails = (): void => {
+    wins = [];
+}
+
+export const setWinDetails = (paylineID: number, symID: number, symCount: number, winAmount: number): void => {
+    const winDetail: winData = {
+        paylineID,
+        symID,
+        symCount,
+        winAmount,
+    };
+    wins.push(winDetail);
 }

@@ -1,7 +1,7 @@
 import express from "express";
 import * as path from "path";
 import * as _ from "lodash";
-import { getBalance, getBets, getCurrentBet, getDefaultReelStops, getNumOfReels, getReels, getSymbolsBaseWin, getWinAmount, setBalance, setCurrentBet, setWinAmount } from "./Model";
+import { clearWinDetails, getBalance, getBets, getCurrentBet, getDefaultReelStops, getNumOfReels, getPaylines, getPayout, getReels, getSymPerReel, getWinAmount, getWinDetails, setBalance, setCurrentBet, setWinAmount, setWinDetails } from "./Model";
 
 const port = 3000;
 const app = express();
@@ -50,28 +50,69 @@ const spinResponse = () => {
         balance: getBalance(),
         currentBet: getCurrentBet(),
         reelStops: reelStops,
-        win: getWinAmount()
+        totalWin: getWinAmount(),
+        wins: getWinDetails()
     };
     for (let i = 0; i < getNumOfReels(); i++) {
         const num = Math.floor(Math.random() * getReels()[i].length);
         reelStops.push(num);
     }
     result.reelStops = reelStops;
-    result.win = checkWin(reelStops);
-    setBalance(getBalance() + result.win);
+    result.totalWin = checkWin([2,2,2,15,0]);
+    setBalance(getBalance() + result.totalWin);
     result.balance = getBalance();
     return result;
 };
 
 const checkWin = (reelStops: number[]) => {
-    const reelGrid: number[] = [];
-    reelStops.forEach((stop, i) => {
-        reelGrid.push(getReels()[i][stop]);
-    })
-    const winSym: number[] = _.sortedUniq(reelGrid);
-    winSym.length === 1 ? setWinAmount(getCurrentBet() * getSymbolsBaseWin()[winSym[0]]) : setWinAmount(0);
+    clearWinDetails();
+    const reelGrid: number[][] = getReelGrid(reelStops);
+    console.log(reelStops);
+    calculateWins(reelGrid, reelStops);
     return getWinAmount();
 }
+
+const getReelGrid = (reelStops: number[]) => {
+    let reelGrid: number[][] = [];
+    const numOfReels = getNumOfReels();
+    const reelSet: number[][] = getReels();
+    for (let i = 0; i < numOfReels; i++) {
+        let reel: number[] = [];
+        for (let j: number = 0; j < getSymPerReel(); j++) {
+            const pos: number = (reelStops[i] + j) > (reelSet[i].length - 1) ? (reelStops[i] + j - reelSet[i].length) : reelStops[i] + j;
+            reel.push(reelSet[i][pos]);
+        }
+        reelGrid.push(reel);
+        console.log(reel);
+    }
+    return reelGrid;
+};
+
+const calculateWins = (reelGrid: number[][], reelStops: number[]) => {
+    const numOfReels = getNumOfReels();
+    const paylines = getPaylines();
+    let totalWin: number = 0;
+    for (let i = 0; i < paylines.length; i++) {
+        let symcount: number = 0;
+        const payline = paylines[i];
+        let j: number = 1;
+    
+        while (j < numOfReels && reelGrid[j][payline[j]] === reelGrid[j - 1][payline[j - 1]]) {
+            symcount = ++j;
+        }
+    
+        if (symcount > 2) {
+            const symID: number = reelGrid[0][payline[0]];
+            const paylineID: number = i;
+            const payout = getPayout()[symID][symcount - 3];
+            const win: number = getCurrentBet() * payout;
+            totalWin += win;
+            setWinDetails(paylineID, symID, symcount, win);
+            console.log(`Payline ${paylineID}, symID: ${symID} x${symcount}, Win = ${win}`);
+        }
+    }    
+    setWinAmount(totalWin);
+};
 
 app.use('/', router);
 app.listen(port);

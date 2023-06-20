@@ -26675,11 +26675,9 @@ void main() {
     }
     indicateLoadingProgress() {
       this.loader.onProgress.add(() => {
-        console.log("Progress = " + Math.floor(this.loader.progress) + "%");
         this.loadingText.text = "LOADING: " + String(Math.floor(this.loader.progress)) + "%";
       });
       this.loader.onComplete.add(() => {
-        console.log("Progress = 100%");
         this.loadingText.text = "LOADING: 100%";
         this.loadingText.visible = false;
       });
@@ -26729,6 +26727,7 @@ void main() {
   var reelStops = [0, 0, 0, 0, 0];
   var win = 0;
   var startReelsStopping = false;
+  var wins = [];
   var getBalance = () => balance;
   var getCurrentBet = () => currentBet;
   var getReels = () => reels;
@@ -26755,6 +26754,9 @@ void main() {
   };
   var setStartReelsStopping = (value) => {
     startReelsStopping = value;
+  };
+  var setWinDetails = (value) => {
+    wins = value;
   };
 
   // src/client/Reel.ts
@@ -26869,6 +26871,12 @@ void main() {
       this.reelsPanel.addChild(this.reelsContainer);
       this.reelsContainer.x = Constant.REELS_PANEL_OFFSET_X;
       this.reelsContainer.y = Constant.REELS_PANEL_OFFSET_Y;
+      const reelMask = new Graphics();
+      reelMask.beginFill(0, 0.5);
+      reelMask.drawRect(-40, 0, 1488, 778);
+      reelMask.endFill();
+      this.reelsContainer.addChild(reelMask);
+      this.reelsContainer.mask = reelMask;
       for (let i = 0; i < Constant.NUM_OF_REELS; i++) {
         const reel = new Reel(this.game);
         this.reels.push(reel);
@@ -26953,6 +26961,7 @@ void main() {
       setCurrentBet(data.currentBet);
       setReelStops(data.reelStops);
       setWin(data.win);
+      setWinDetails(data.winDetails);
     }
   };
 
